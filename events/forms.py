@@ -11,7 +11,8 @@ class EventAdminForm(forms.ModelForm):
             widget=forms.TextInput(attrs={'class': 'vTextField'}))
     description_markdown = forms.CharField(label="Description",
             widget=forms.Textarea(attrs={'class': 'vLargeTextField'}),
-            help_text="Use <a href='http://daringfireball.net/projects/markdown/basics'>Markdown formatting</a>")
+            help_text="""Use <a href='http://daringfireball.net/projects/markdown/basics'>
+                                           Markdown formatting</a>""")
 
     class Meta:
         model = Event
