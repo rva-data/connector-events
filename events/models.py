@@ -1,11 +1,14 @@
 import markdown
 
 from datetime import datetime
-
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from model_utils.models import TimeStampedModel, TimeFramedModel
+
+
+EVENTS_UID_STRING = getattr(settings, 'EVENTS_UID_STRING', "event_{pk}")
 
 
 class ActiveManager(models.Manager):
@@ -74,7 +77,7 @@ class Event(TimeStampedModel, TimeFramedModel):
         self.description = markdown.markdown(self.description_markdown,
                 output_format='html5')
         if not self.uid:
-            self.uid = "event_{pk}@rvaconnect.com".format(pk=self.pk)
+            self.uid = EVENTS_UID_STRING.format(pk=self.pk)
         return super(Event, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

@@ -4,11 +4,15 @@ from django_ical.views import ICalFeed
 from .models import Event
 
 
+EVENTS_PRODUCT_ID = getattr(settings, 'EVENTS_PRODUCT_ID',
+        "-//django-connector//connector-events//EN")
+
+
 class EventFeed(ICalFeed):
     """
     A simple event calender
     """
-    product_id = '-//rvaconnect.com//RVA Events//EN'
+    product_id = EVENTS_PRODUCT_ID
     timezone = settings.TIME_ZONE
 
     def items(self):
