@@ -19,8 +19,15 @@ class ActiveManager(models.Manager):
     without needing to be deleted from the database. This manager should be
     used for detail views, as even past events should be shown.
     """
+    def get_queryset(self):
+        """Returns the default Manager queryset"""
+        if hasattr(models.Manager, 'get_queryset'):
+            return super(ActiveManager, self).get_queryset().filter(is_active=True)
+        raise NotImplementedError
+
     def get_query_set(self):
-        return super(ActiveManager, self).get_queryset().filter(is_active=True)
+        """Returns the default Manager queryset (DEPRECATED)"""
+        return super(ActiveManager, self).get_query_set().filter(is_active=True)
 
 
 class CurrentManager(ActiveManager):
@@ -29,8 +36,16 @@ class CurrentManager(ActiveManager):
 
     This functionality should be used for list views and/or search indexing.
     """
+    def get_queryset(self):
+        """Returns the default Manager queryset"""
+        if hasattr(models.Manager, 'get_queryset'):
+            return super(CurrentManager, self).get_query_set().filter(
+                    Q(end__gte=datetime.now) | Q(start__gte=datetime.now))
+        raise NotImplementedError
+
     def get_query_set(self):
-        return super(CurrentManager, self).get_queryset().filter(
+        """Returns the default Manager queryset (DEPRECATED)"""
+        return super(CurrentManager, self).get_query_set().filter(
                 Q(end__gte=datetime.now) | Q(start__gte=datetime.now))
 
 
