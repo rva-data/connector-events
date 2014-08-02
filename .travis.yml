@@ -1,7 +1,6 @@
 language: python
 python: 2.7
 env:
-  - TOX_ENV=
   - TOX_ENV=py33-django17
   - TOX_ENV=py33-django16
   - TOX_ENV=py33-django15
