@@ -1,0 +1,13 @@
+<section itemscope itemtype="http://schema.org/Event">
+  <header>
+    <h1 itemprop="name">{{ event.name }}</h1>
+    <p>{{ event.start }}{% if event.end %} &mdash; {{ event.end }}{% endif %}</p>
+    <meta itemprop="startDate" content="{{ event.start|date:"c" }}">
+    {% if event.end %}<meta itemprop="endDate" content="{{ event.end|date:"c" }}">{% endif %}
+  </header>
+  <div itemprop="description">
+  {{ event.description|safe }}
+  </div>
+  {% if event.location %}<p>{{ event.location }}</p>{% endif %}
+  <p><a href="{{ event.url }}" itemprop="url">See the source</a></p>
+</section>

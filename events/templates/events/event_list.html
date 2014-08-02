@@ -1,0 +1,23 @@
+{% load events_tags %}
+<header>
+  <h1>
+    Events
+    <a href="{% url 'event_list_ical' %}" title="Download the iCalendar file"><span class="glyphicon glyphicon-calendar"></span></a>
+  </h1>
+  <p>Upcoming events for developers, designers, and start-up entrepreneurs.</p>
+</header>
+{% regroup events_list by start.month as grouped_events %}
+{% for event_month in grouped_events %}
+  <h2>{{ event_month.grouper|month_name }}</h2>
+  {% for event in event_month.list %}
+    <div class="event" itemscope itemtype="http://schema.org/Event">
+      <h3 itemprop="name"><a href="{{ event.get_absolute_url }}">{{ event.name }}</a></h3>
+      <a name="event-{{ forloop.counter }}"></a>
+      <p itemprop="description">{{ event.description|striptags|truncatewords:20|safe }}</p>
+      <p>{{ event.start }}{% if event.end %} &mdash; {{ event.end }}{% endif %}</p>
+      <meta itemprop="startDate" content="{{ event.start|date:'c' }}" />
+      <meta itemprop="url" content="{{ event.url }}" />
+      {% if event.end %}<meta itemprop="endDate" content="{{ event.end|date:"c" }}">{% endif %}
+    </div>
+    {% endfor %}
+{% endfor %}
