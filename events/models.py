@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 from model_utils.models import TimeStampedModel, TimeFramedModel
 
 
@@ -40,13 +41,13 @@ class CurrentManager(ActiveManager):
         """Returns the default Manager queryset"""
         if hasattr(models.Manager, 'get_queryset'):
             return super(CurrentManager, self).get_query_set().filter(
-                    Q(end__gte=datetime.now) | Q(start__gte=datetime.now))
+                    Q(end__gte=timezone.now) | Q(start__gte=timezone.now))
         raise NotImplementedError
 
     def get_query_set(self):
         """Returns the default Manager queryset (DEPRECATED)"""
         return super(CurrentManager, self).get_query_set().filter(
-                Q(end__gte=datetime.now) | Q(start__gte=datetime.now))
+                Q(end__gte=timezone.now) | Q(start__gte=timezone.now))
 
 
 class Event(TimeStampedModel, TimeFramedModel):
